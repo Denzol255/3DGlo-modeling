@@ -17,7 +17,7 @@ console.log(`Цель заработать ${mission} долларов`);
 console.log(addExpenses.toLowerCase().split(", "));
 console.log(budgetDay);
 
-money = prompt("Ваш месячный доход?");
+money = Number(prompt("Ваш месячный доход?"));
 
 addExpenses = prompt(
   "Перечислите возможные расходы за рассчитываемый период через запятую"
@@ -26,9 +26,9 @@ addExpenses = prompt(
 deposit = confirm("Есть ли у вас депозит в банке?");
 
 let expenses1 = prompt("Введите обязательную статью расходов?"),
-  amount1 = prompt("Во сколько это обойдется?"),
+  amount1 = Number(prompt("Во сколько это обойдется?")),
   expenses2 = prompt("Введите обязательную статью расходов?"),
-  amount2 = prompt("Во сколько это обойдется?"),
+  amount2 = Number(prompt("Во сколько это обойдется?")),
   budgetMonth = money - amount1 - amount2,
   monthsForMisson = Math.round(mission / budgetMonth);
 
