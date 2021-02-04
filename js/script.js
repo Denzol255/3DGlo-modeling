@@ -3,26 +3,25 @@ let isNumber = function (n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+let money;
+
 const income = "Инвестиции",
   mission = 90000,
-  period = 6;
-
-let money,
-  addExpenses = prompt(
-    "Перечислите возможные расходы за рассчитываемый период через запятую",
-    "Драгоценности, одежда, бензин"
-  ),
-  deposit = confirm("Есть ли у вас депозит в банке?"),
-  expenses = [],
+  period = 6,
   start = function () {
     do {
       money = prompt("Ваш месячный доход?");
     } while (!isNumber(money));
   };
-
 start();
 
-let showTypeOf = function (data) {
+let addExpenses = prompt(
+    "Перечислите возможные расходы за рассчитываемый период через запятую",
+    "Драгоценности, одежда, бензин"
+  ),
+  deposit = confirm("Есть ли у вас депозит в банке?"),
+  expenses = [],
+  showTypeOf = function (data) {
     console.log(data, typeof data);
   },
   getExpensesMonth = function () {
@@ -66,6 +65,10 @@ let showTypeOf = function (data) {
       console.log("Что-то пошло не так");
     }
   };
+
+money = Number(money);
+/* Иначе money отображается как string, что думаю не совсем правильно, если преобразовывать сразу, то пустая строка 
+перобразуется в 0 */
 
 showTypeOf(money);
 showTypeOf(income);
