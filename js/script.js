@@ -29,7 +29,10 @@ let appData = {
     appData.deposit = confirm("Есть ли у вас депозит в банке?");
     for (let i = 0; i < 2; i++) {
       let key = prompt("Введите обязательную статью расходов?");
-      appData.expenses[key] = Number(prompt("Во сколько это обойдется?")); // Добавить проверку на число!
+      do {
+        appData.expenses[key] = prompt("Во сколько это обойдется?");
+      } while (!isNumber(appData.expenses[key]));
+      appData.expenses[key] = Number(appData.expenses[key]);
     }
     console.log(appData.expenses);
   },
@@ -37,18 +40,22 @@ let appData = {
   budgetDay: 0,
   budgetMonth: 0,
   expensesMonth: 0,
+  //Метод возвращает все расходы
   getExpensesMonth: function () {
-    let sum = 0;
     for (let key in appData.expenses) {
-      sum += appData.expenses[key];
+      appData.expensesMonth += appData.expenses[key];
     }
-    return sum;
+    return appData.expensesMonth;
   },
-  getAccumulatedMonth: function (cash, exps) {
-    return cash - exps;
+
+  //Метод возвращает доходы за месяц (Доходы минус расходы) + бюджет на день
+  getBudget: function () {
+    appData.budgetMonth = appData.budget - appData.expensesMonth;
+    appData.budgetDay = Math.floor(appData.budgetMonth / 30);
   },
-  getTargetMonth: function (mis, acc) {
-    let target = Math.round(mis / acc);
+
+  getTargetMonth: function () {
+    let target = Math.round(appData.mission / appData.budgetMonth);
     if (target > 0 && isFinite(target)) {
       console.log(`Цель будет достигнута за ${target} месяцев (-а)`);
     } else {
@@ -71,13 +78,18 @@ let appData = {
 };
 
 appData.asking();
-
-let expensesAmount = appData.getExpensesMonth(),
-  accumulatedMonth = appData.getAccumulatedMonth(money, expensesAmount),
-  targetMonth = appData.getTargetMonth(appData.mission, accumulatedMonth);
-
-console.log("Расходы за месяц: " + expensesAmount);
-console.log(`Бюджет на день: ${appData.budgetDay}`);
+appData.getExpensesMonth();
+appData.getBudget();
+console.log("Расходы за месяц: " + appData.expensesMonth);
+appData.getTargetMonth();
 appData.getStatusIncome();
 
-// Math.floor(appData.getAccumulatedMonth / 30);
+for (let key in appData) {
+  console.log(
+    "Наша программа включает в себя данные: " +
+      "Ключ: " +
+      key +
+      " Значение: " +
+      appData[key]
+  );
+}
