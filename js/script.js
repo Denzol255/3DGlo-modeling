@@ -20,19 +20,20 @@ const calcBtn = document.getElementById("start"),
   firstPlusBtn = document.getElementsByTagName("button")[0],
   secondPlusBtn = document.getElementsByTagName("button")[1],
   depositCheckbox = document.querySelector("#deposit-check"),
-  firstAddIncomeField = document.querySelectorAll(".additional_income-item")[0],
-  secondAddIncomeField = document.querySelectorAll(
-    ".additional_income-item"
-  )[1],
-  budgetMonthValue = document.getElementsByClassName("budget_month-value"),
-  budgetDayValue = document.getElementsByClassName("budget_day-value"),
-  expensesMonthValue = document.getElementsByClassName("expenses_month-value"),
-  addIncomeValue = document.getElementsByClassName("additional_income-value"),
+  addIncomeField = document.querySelectorAll(".additional_income-item"),
+  budgetMonthValue = document.getElementsByClassName(".budget_month-value")[0],
+  budgetDayValue = document.getElementsByClassName("budget_day-value")[0],
+  expensesMonthValue = document.getElementsByClassName(
+    "expenses_month-value"
+  )[0],
+  addIncomeValue = document.getElementsByClassName(
+    "additional_income-value"
+  )[0],
   addExpensesValue = document.getElementsByClassName(
     "additional_expenses-value"
-  ),
-  incomePeriodValue = document.getElementsByClassName("income_period-value"),
-  targetMonthValue = document.getElementsByClassName("target_month-value"),
+  )[0],
+  incomePeriodValue = document.getElementsByClassName("income_period-value")[0],
+  targetMonthValue = document.getElementsByClassName("target_month-value")[0],
   salaryAmount = document.querySelector(".salary-amount"),
   incomeTitle = document.querySelectorAll(".income-title")[1],
   incomeAmount = document.querySelector(".income-amount"),
@@ -46,8 +47,7 @@ const calcBtn = document.getElementById("start"),
 // console.log(incomeTitle);
 // console.log(incomeAmount);
 // console.log(firstPlusBtn);
-// console.log(firstAddIncomeField);
-// console.log(secondAddIncomeField);
+// console.log(addIncomeField);
 // console.log(expensesTitle);
 // console.log(expensesAmount);
 // console.log(secondPlusBtn);
