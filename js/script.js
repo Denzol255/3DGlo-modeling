@@ -21,7 +21,7 @@ const calcBtn = document.getElementById("start"),
   secondPlusBtn = document.getElementsByTagName("button")[1],
   depositCheckbox = document.querySelector("#deposit-check"),
   addIncomeField = document.querySelectorAll(".additional_income-item"),
-  budgetMonthValue = document.getElementsByClassName(".budget_month-value")[0],
+  budgetMonthValue = document.getElementsByClassName("budget_month-value")[0],
   budgetDayValue = document.getElementsByClassName("budget_day-value")[0],
   expensesMonthValue = document.getElementsByClassName(
     "expenses_month-value"
@@ -43,26 +43,26 @@ const calcBtn = document.getElementById("start"),
   targetAmount = document.querySelector(".target-amount"),
   periodRange = document.querySelector(".period-select");
 
-// console.log(salaryAmount);
-// console.log(incomeTitle);
-// console.log(incomeAmount);
-// console.log(firstPlusBtn);
-// console.log(addIncomeField);
-// console.log(expensesTitle);
-// console.log(expensesAmount);
-// console.log(secondPlusBtn);
-// console.log(addExpensesField);
-// console.log(depositCheckbox);
-// console.log(targetAmount);
-// console.log(periodRange);
-// console.log(budgetMonthValue);
-// console.log(budgetDayValue);
-// console.log(expensesMonthValue);
-// console.log(addIncomeValue);
-// console.log(addExpensesValue);
-// console.log(incomePeriodValue);
-// console.log(targetMonthValue);
-// console.log(calcBtn);
+console.log(salaryAmount);
+console.log(incomeTitle);
+console.log(incomeAmount);
+console.log(firstPlusBtn);
+console.log(addIncomeField);
+console.log(expensesTitle);
+console.log(expensesAmount);
+console.log(secondPlusBtn);
+console.log(addExpensesField);
+console.log(depositCheckbox);
+console.log(targetAmount);
+console.log(periodRange);
+console.log(budgetMonthValue);
+console.log(budgetDayValue);
+console.log(expensesMonthValue);
+console.log(addIncomeValue);
+console.log(addExpensesValue);
+console.log(incomePeriodValue);
+console.log(targetMonthValue);
+console.log(calcBtn);
 
 let appData = {
   income: {},
