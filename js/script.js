@@ -69,7 +69,7 @@ let appData = {
     targetMonthValue.value = appData.getTargetMonth();
     incomePeriodValue.value = appData.calcSavedMoney();
 
-    periodRange.addEventListener("change", function (e) {
+    periodRange.addEventListener("input", function (e) {
       incomePeriodValue.value = appData.budgetMonth * e.target.value;
     });
   },
@@ -193,13 +193,18 @@ const checkSalaryField = function () {
 
 salaryAmount.addEventListener("change", checkSalaryField);
 
-start.addEventListener("click", appData.start);
+const clicked = function () {
+  appData.start();
+  start.removeEventListener("click", clicked);
+};
+
+start.addEventListener("click", clicked);
 
 secondPlusBtn.addEventListener("click", appData.addExpensesBlock);
 
 firstPlusBtn.addEventListener("click", appData.addIncomeBlock);
 
-periodRange.addEventListener("change", function (e) {
+periodRange.addEventListener("input", function (e) {
   let periodAmount = document.querySelector(".period-amount");
   periodAmount.textContent = e.target.value;
 });
