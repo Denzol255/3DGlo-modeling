@@ -73,7 +73,7 @@ let appData = {
     incomePeriodValue.value = this.calcSavedMoney();
 
     periodRange.addEventListener("input", function (e) {
-      incomePeriodValue.value = appData.budgetMonth * e.target.value;
+      incomePeriodValue.value = this.budgetMonth * e.target.value;
     });
   },
   addExpensesBlock: function () {
@@ -121,7 +121,7 @@ let appData = {
       item = item.trim();
       if (item !== "") {
         item = item.trim().slice(0, 1).toUpperCase() + item.trim().slice(1);
-        appData.addExpenses.push(item);
+        this.addExpenses.push(item);
       }
     });
   },
@@ -182,19 +182,6 @@ let appData = {
     return this.budgetMonth * periodRange.value;
   },
   reset: function () {
-    document
-      .querySelectorAll("[type = 'text']")
-      .forEach((elem) => (elem.value = ""));
-    document
-      .querySelectorAll(
-        ".salary-amount, .income-amount, .income-title, .additional_income-item"
-      )
-      .forEach((elem) => elem.removeAttribute("disabled"));
-    document
-      .querySelectorAll(
-        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
-      )
-      .forEach((elem) => elem.removeAttribute("disabled"));
     this.budget = 0;
     this.budgetDay = 0;
     this.budgetMonth = 0;
@@ -208,22 +195,61 @@ let appData = {
     this.percentDeposit = 0;
     this.moneyDeposit = 0;
     periodRange.value = 1;
+    document
+      .querySelectorAll("[type = 'text']")
+      .forEach((elem) => (elem.value = ""));
+    document
+      .querySelectorAll(
+        ".salary-amount, .income-amount, .income-title, .additional_income-item"
+      )
+      .forEach((elem) => elem.removeAttribute("disabled"));
+    document
+      .querySelectorAll(
+        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
+      )
+      .forEach((elem) => elem.removeAttribute("disabled"));
+    firstPlusBtn.style.display = "block";
+    secondPlusBtn.style.display = "block";
     document.querySelector(".period-amount").textContent = periodRange.value;
   },
 };
+
+const checkSalaryField = function () {
+    if (salaryAmount.value.trim() !== "") {
+      start.disabled = false;
+    }
+    return;
+  },
+  startAppData = appData.start.bind(appData),
+  clickedStart = function () {
+    startAppData();
+    document
+      .querySelectorAll(
+        ".salary-amount, .income-amount, .income-title, .additional_income-item"
+      )
+      .forEach((elem) => elem.setAttribute("disabled", "disabled"));
+    document
+      .querySelectorAll(
+        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
+      )
+      .forEach((elem) => elem.setAttribute("disabled", "disabled"));
+
+    start.style.display = "none";
+    cancel.style.display = "block";
+  },
+  resetAppData = appData.reset.bind(appData),
+  clickedCancel = function () {
+    resetAppData();
+    cancel.style.display = "none";
+    start.style.display = "block";
+    start.disabled = true;
+  };
 
 salaryAmount.focus();
 
 start.disabled = true;
 
-const checkSalaryField = function () {
-  if (salaryAmount.value.trim() !== "") {
-    start.disabled = false;
-  }
-  return;
-};
-
-salaryAmount.addEventListener("change", checkSalaryField);
+salaryAmount.addEventListener("input", checkSalaryField);
 
 secondPlusBtn.addEventListener("click", appData.addExpensesBlock);
 
@@ -234,31 +260,6 @@ periodRange.addEventListener("input", function (e) {
   periodAmount.textContent = e.target.value;
 });
 
-const clickedStart = function () {
-  appData.start();
-  console.log(periodRange.value);
-  document
-    .querySelectorAll(
-      ".salary-amount, .income-amount, .income-title, .additional_income-item"
-    )
-    .forEach((elem) => elem.setAttribute("disabled", "disabled"));
-  document
-    .querySelectorAll(
-      ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
-    )
-    .forEach((elem) => elem.setAttribute("disabled", "disabled"));
-
-  start.style.display = "none";
-  cancel.style.display = "block";
-};
-
 start.addEventListener("click", clickedStart);
-
-const clickedCancel = function () {
-  appData.reset();
-  cancel.style.display = "none";
-  start.style.display = "block";
-  start.disabled = true;
-};
 
 cancel.addEventListener("click", clickedCancel);
