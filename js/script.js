@@ -269,8 +269,6 @@ AppData.prototype.clickedCancel = function () {
 
 appData.eventListeners();
 
-console.log(appData);
-
 salaryAmount.focus();
 
 start.disabled = true;
