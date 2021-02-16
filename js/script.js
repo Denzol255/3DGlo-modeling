@@ -87,21 +87,21 @@ let appData = {
     }
   },
   getExpenses: function () {
-    expensesItems.forEach(function (item) {
+    expensesItems.forEach((item) => {
       let itemExpenses = item.querySelector(".expenses-title").value;
       let cashExpenses = item.querySelector(".expenses-amount").value;
 
       if (itemExpenses !== "" && cashExpenses !== "") {
-        appData.expenses[itemExpenses] = cashExpenses;
+        this.expenses[itemExpenses] = cashExpenses;
       }
     });
   },
   getIncome: function () {
-    incomeItems.forEach(function (item) {
+    incomeItems.forEach((item) => {
       let itemIncome = item.querySelector(".income-title").value;
       let cashIncome = item.querySelector(".income-amount").value;
       if (itemIncome !== "" && cashIncome !== "") {
-        appData.income[itemIncome] = cashIncome;
+        this.income[itemIncome] = cashIncome;
       }
     });
   },
@@ -121,7 +121,7 @@ let appData = {
       item = item.trim();
       if (item !== "") {
         item = item.trim().slice(0, 1).toUpperCase() + item.trim().slice(1);
-        this.addExpenses.push(item);
+        appData.addExpenses.push(item);
       }
     });
   },
@@ -208,6 +208,12 @@ let appData = {
         ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
       )
       .forEach((elem) => elem.removeAttribute("disabled"));
+    for (let i = 1; i < incomeItems.length; i++) {
+      incomeItems[i].parentNode.removeChild(incomeItems[i]);
+    }
+    for (let i = 1; i < expensesItems.length; i++) {
+      expensesItems[i].parentNode.removeChild(expensesItems[i]);
+    }
     firstPlusBtn.style.display = "block";
     secondPlusBtn.style.display = "block";
     document.querySelector(".period-amount").textContent = periodRange.value;
