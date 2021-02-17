@@ -1,6 +1,12 @@
 "use strict";
 
-function DomElement(selector, height, width, bg, fontSize) {
+function DomElement(
+  selector = ".block",
+  height = 100,
+  width = 200,
+  bg = "FA8E47",
+  fontSize = 14
+) {
   this.selector = selector;
   this.height = height;
   this.width = width;
@@ -9,27 +15,23 @@ function DomElement(selector, height, width, bg, fontSize) {
 }
 
 DomElement.prototype.createEl = function () {
+  let block;
   if (this.selector[0] === ".") {
-    let newDiv = document.createElement("div");
-    newDiv.classList.add(this.selector);
-    newDiv.textContent = "Div";
-    newDiv.style.cssText = `height: ${this.height}px; 
-            width: ${this.width}px; 
-            background-color: #${this.bg}; 
-            font-size: ${this.fontSize}px;`;
-    document.body.appendChild(newDiv);
+    block = document.createElement("div");
+    block.classList.add(this.selector.slice(1));
+    block.textContent = "Div";
   } else if (this.selector[0] === "#") {
-    let newP = document.createElement("p");
-    newP.classList.add(this.selector);
-    newP.textContent = "Параграф";
-    newP.style.cssText = `height: ${this.height}px; 
-            width: ${this.width}px; 
-            background-color: #${this.bg}; 
-            font-size: ${this.fontSize}px;`;
-    document.body.appendChild(newP);
+    block = document.createElement("p");
+    block.setAttribute("id", this.selector.slice(1));
+    block.textContent = "Параграф";
   }
+  block.style.cssText = `height: ${this.height}px; 
+  width: ${this.width}px; 
+  background-color: #${this.bg}; 
+  font-size: ${this.fontSize}px`;
+  document.body.append(block);
 };
 
-let newELement = new DomElement("#block", 100, 200, "FF0000", 32);
+let newELement = new DomElement("#new", 300, 400, "FF0000", 32);
 
 newELement.createEl();
