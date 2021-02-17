@@ -57,8 +57,7 @@ class AppData {
   start() {
     this.budget = +salaryAmount.value;
 
-    this.getExpenses();
-    this.getIncome();
+    this.getExpInc();
     this.getExpensesMonth();
     this.getAddExpenses();
     this.getAddIncome();
@@ -78,6 +77,20 @@ class AppData {
       incomePeriodValue.value = this.budgetMonth * e.target.value;
     });
   }
+  getExpInc() {
+    const count = (item) => {
+      const startStr = item.className.split("-")[0];
+      let itemTitle = item.querySelector(`.${startStr}-title`).value;
+      let itemAmount = item.querySelector(`.${startStr}-amount`).value;
+      if (itemTitle !== "" && itemAmount !== "") {
+        this[startStr][itemTitle] = itemAmount;
+      }
+    };
+
+    incomeItems.forEach(count);
+
+    expensesItems.forEach(count);
+  }
   addExpensesBlock() {
     let cloneExpensesItem = expensesItems[0].cloneNode(true);
     cloneExpensesItem.children[0].value = "";
@@ -87,25 +100,6 @@ class AppData {
     if (expensesItems.length === 3) {
       secondPlusBtn.style.display = "none";
     }
-  }
-  getExpenses() {
-    expensesItems.forEach((item) => {
-      let itemExpenses = item.querySelector(".expenses-title").value;
-      let cashExpenses = item.querySelector(".expenses-amount").value;
-
-      if (itemExpenses !== "" && cashExpenses !== "") {
-        this.expenses[itemExpenses] = cashExpenses;
-      }
-    });
-  }
-  getIncome() {
-    incomeItems.forEach((item) => {
-      let itemIncome = item.querySelector(".income-title").value;
-      let cashIncome = item.querySelector(".income-amount").value;
-      if (itemIncome !== "" && cashIncome !== "") {
-        this.income[itemIncome] = cashIncome;
-      }
-    });
   }
   addIncomeBlock() {
     let cloneIncomeItem = incomeItems[0].cloneNode(true);
