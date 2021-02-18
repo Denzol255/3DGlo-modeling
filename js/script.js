@@ -200,6 +200,11 @@ class AppData {
     start.style.display = "block";
     depositCheckbox.checked = false;
     start.disabled = true;
+    depositBank.style.display = "none";
+    depositAmount.style.display = "none";
+    depositPercent.style.display = "none";
+    depositBank.value = "";
+    depositAmount.value = "";
   }
   checkSalaryField() {
     if (salaryAmount.value.trim() !== "") {
@@ -207,9 +212,16 @@ class AppData {
     }
   }
   checkPercentField() {
-    if (!isNumber(depositPercent.value)) {
+    if (
+      isNumber(depositPercent.value) &&
+      depositPercent.value <= 100 &&
+      depositPercent.value > 0
+    ) {
+      console.log(depositPercent.value);
+      start.disabled = false;
+    } else {
       alert("Некорректное значение процентов");
-      // Навестить фоаг true/false для проверки
+      start.disabled = true;
     }
   }
   start() {
@@ -231,7 +243,7 @@ class AppData {
       .forEach((elem) => elem.setAttribute("disabled", "disabled"));
     document
       .querySelectorAll(
-        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
+        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount, .deposit-amount, .deposit-percent, .deposit-bank"
       )
       .forEach((elem) => elem.setAttribute("disabled", "disabled"));
 
