@@ -184,7 +184,7 @@ class AppData {
       .forEach((elem) => elem.removeAttribute("disabled"));
     document
       .querySelectorAll(
-        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount"
+        ".expenses-amount, .expenses-title, .additional_expenses-item, .target-amount, .deposit-amount, .deposit-percent, .deposit-bank"
       )
       .forEach((elem) => elem.removeAttribute("disabled"));
     for (let i = 1; i < incomeItems.length; i++) {
