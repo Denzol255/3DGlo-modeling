@@ -107,7 +107,9 @@ class AppData {
     addExpenses.forEach((item) => {
       item = item.trim();
       if (item !== "") {
-        item = item.trim().slice(0, 1).toUpperCase() + item.trim().slice(1);
+        item =
+          item.trim().slice(0, 1).toUpperCase() +
+          item.trim().slice(1).toLowerCase();
         this.addExpenses.push(item);
       }
     });
@@ -217,7 +219,6 @@ class AppData {
       depositPercent.value <= 100 &&
       depositPercent.value > 0
     ) {
-      console.log(depositPercent.value);
       start.disabled = false;
     } else {
       alert("Некорректное значение процентов");
@@ -260,8 +261,10 @@ class AppData {
     const valueSelect = this.value;
     if (valueSelect === "other") {
       depositPercent.style.display = "inline-block";
+      depositPercent.value = "";
     } else {
       depositPercent.value = valueSelect;
+      depositPercent.style.display = "none";
     }
   }
   depositeHandler() {
