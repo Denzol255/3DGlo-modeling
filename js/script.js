@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
@@ -46,5 +47,61 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
-  countTimer("23 feb 2021");
+  countTimer("24 feb 2021");
+
+  //Menu
+  const toggleMenu = () => {
+    const menuBtn = document.querySelector(".menu"),
+      menu = document.querySelector("menu"),
+      menuCloseBtn = document.querySelector(".close-btn"),
+      menuItems = menu.querySelectorAll("ul > li");
+
+    const handlerMenu = () => menu.classList.toggle("active-menu");
+    menuBtn.addEventListener("click", handlerMenu);
+    menuCloseBtn.addEventListener("click", handlerMenu);
+    menuItems.forEach((item) => item.addEventListener("click", handlerMenu));
+  };
+
+  toggleMenu();
+
+  //Popup
+  const togglePopup = () => {
+    const popupBtn = document.querySelectorAll(".popup-btn"),
+      popup = document.querySelector(".popup"),
+      popupCloseBtn = popup.querySelector(".popup-close"),
+      popupContent = popup.querySelector(".popup-content");
+    let animationInterval;
+    const start = Date.now(),
+      draw = (timePassed) => {
+        popupContent.style.left = timePassed / 5 + "px";
+      },
+      popupAnimation = () => {
+        animationInterval = requestAnimationFrame(popupAnimation);
+        const timerAnimation = setInterval(() => {
+          const timePassed = Date.now() - start;
+
+          if (timePassed >= 5000) {
+            clearInterval(timerAnimation);
+            return;
+          }
+
+          draw(timePassed);
+        }, 10);
+      };
+
+    popupBtn.forEach((item) => {
+      item.addEventListener("click", () => {
+        popup.style.display = "block";
+
+        popupAnimation();
+      });
+    });
+
+    popupCloseBtn.addEventListener(
+      "click",
+      () => (popup.style.display = "none")
+    );
+  };
+
+  togglePopup();
 });
