@@ -63,37 +63,53 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   toggleMenu();
-
   //Popup
   const togglePopup = () => {
     const popupBtn = document.querySelectorAll(".popup-btn"),
       popup = document.querySelector(".popup"),
       popupCloseBtn = popup.querySelector(".popup-close"),
       popupContent = popup.querySelector(".popup-content");
-    let animationInterval;
-    const start = Date.now(),
-      draw = (timePassed) => {
-        popupContent.style.left = timePassed / 5 + "px";
-      },
-      popupAnimation = () => {
-        animationInterval = requestAnimationFrame(popupAnimation);
-        const timerAnimation = setInterval(() => {
-          const timePassed = Date.now() - start;
+    function animate({ timing, draw, duration }) {
+      const start = performance.now();
 
-          if (timePassed >= 5000) {
-            clearInterval(timerAnimation);
-            return;
-          }
+      requestAnimationFrame(function animate(time) {
+        // timeFraction изменяется от 0 до 1
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) {
+          timeFraction = 1;
+        }
 
-          draw(timePassed);
-        }, 10);
-      };
+        // вычисление текущего состояния анимации
+        const progress = timing(timeFraction);
 
+        draw(progress); // отрисовать её
+
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+      });
+    }
     popupBtn.forEach((item) => {
       item.addEventListener("click", () => {
-        popup.style.display = "block";
-
-        popupAnimation();
+        if (document.documentElement.clientWidth > 768) {
+          popup.style.display = "block";
+          animate({
+            duration: 1000,
+            timing(timeFraction) {
+              return Math.pow(timeFraction, 3);
+            },
+            draw(progress) {
+              popupContent.style.left =
+                progress *
+                  (document.documentElement.clientWidth / 2 -
+                    popupContent.offsetWidth / 2 +
+                    50) +
+                "px";
+            },
+          });
+        } else {
+          popup.style.display = "block";
+        }
       });
     });
 
