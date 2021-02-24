@@ -71,7 +71,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!itsMenu && !itsBtnMenu && menuIsActive) {
         handlerMenu();
       }
-      target = target.matches("a");
+      target = target.matches("menu a");
       if (target) {
         handlerMenu();
       }
