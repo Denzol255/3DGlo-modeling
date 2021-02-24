@@ -2,7 +2,6 @@
 /* eslint-disable space-before-function-paren */
 /* eslint-disable strict */
 /* eslint-disable no-unused-vars */
-/*tslint:disabled*/
 window.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
