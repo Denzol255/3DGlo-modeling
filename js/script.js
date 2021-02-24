@@ -55,17 +55,13 @@ window.addEventListener("DOMContentLoaded", () => {
   //Menu
   const toggleMenu = () => {
     const menuBtn = document.querySelector(".menu"),
-      menu = document.querySelector("menu"),
-      menuCloseBtn = document.querySelector(".close-btn"),
-      menuItems = menu.querySelectorAll("ul > li");
+      menu = document.querySelector("menu");
 
     const handlerMenu = () => menu.classList.toggle("active-menu");
     menuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       handlerMenu();
     });
-    // menuCloseBtn.addEventListener("click", handlerMenu);
-    // menuItems.forEach((item) => item.addEventListener("click", handlerMenu));
 
     document.addEventListener("click", (event) => {
       let target = event.target;
