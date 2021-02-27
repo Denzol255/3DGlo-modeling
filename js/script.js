@@ -1,11 +1,12 @@
 "use strict";
 
 class Todo {
-  constructor(form, input, todoList, todoCompleted) {
+  constructor(form, input, todoList, todoCompleted, todoContainer) {
     this.form = document.querySelector(form);
     this.input = document.querySelector(input);
     this.todoList = document.querySelector(todoList);
     this.todoCompleted = document.querySelector(todoCompleted);
+    this.todoContainer = document.querySelector(todoContainer);
     this.todoData = new Map(JSON.parse(localStorage.getItem("todo")));
   }
 
@@ -17,12 +18,14 @@ class Todo {
     this.todoList.textContent = "";
     this.todoCompleted.textContent = "";
     this.todoData.forEach(this.createItem, this);
+    this.handlerItem();
     this.addToStorage();
   }
 
   createItem(todo) {
     const li = document.createElement("li");
     li.classList.add("todo-item");
+    li.key = todo.key;
     li.insertAdjacentHTML(
       "beforeend",
       `<span class="text-todo">${todo.value}</span>
@@ -48,6 +51,7 @@ class Todo {
         key: this.generateKey(),
       };
       this.todoData.set(newTodo.key, newTodo);
+      this.input.value = "";
       this.render();
     } else {
       alert("Вы должны указать дело");
@@ -61,6 +65,37 @@ class Todo {
     );
   }
 
+  deleteItem(liKey) {
+    this.todoData.delete(liKey);
+  }
+
+  completedItem(liKey) {
+    this.todoData.forEach((item) => {
+      if (item.key === liKey) {
+        item.completed = !item.completed;
+      }
+    });
+  }
+
+  handlerItem() {
+    this.todoContainer.addEventListener("click", (event) => {
+      const target = event.target;
+      if (
+        target.matches(".todo-list .todo-complete") ||
+        target.matches(".todo-completed .todo-complete")
+      ) {
+        this.completedItem(target.parentNode.parentNode.key);
+        this.render();
+      } else if (
+        target.matches(".todo-list .todo-remove") ||
+        target.matches(".todo-completed .todo-remove")
+      ) {
+        this.deleteItem(target.parentNode.parentNode.key);
+        this.render();
+      }
+    });
+  }
+
   init() {
     this.form.addEventListener("submit", this.addTodo.bind(this));
     this.render();
@@ -71,7 +106,8 @@ const todo = new Todo(
   ".todo-control",
   ".header-input",
   ".todo-list",
-  ".todo-completed"
+  ".todo-completed",
+  ".todo-container"
 );
 
 todo.init();
