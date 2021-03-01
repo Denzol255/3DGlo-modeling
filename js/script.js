@@ -192,7 +192,6 @@ window.addEventListener("DOMContentLoaded", () => {
       interval,
       dot;
 
-    console.log(slide.length);
     for (let i = 0; i < slide.length; i++) {
       dot = document.createElement("li");
       dot.classList.add("dot");
@@ -203,7 +202,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     const sliderDot = document.querySelectorAll(".dot");
-    console.log(sliderDot.length);
 
     const slideNext = (elem, index, strSlide) => {
       elem[index].classList.add(strSlide);
@@ -283,4 +281,65 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   slider();
+
+  const photoChange = () => {
+    const commandPhoto = document.querySelectorAll(".command__photo");
+    commandPhoto.forEach((item) => {
+      let oldSrcPhoto;
+      item.addEventListener("mouseenter", (e) => {
+        oldSrcPhoto = e.target.src;
+        e.target.src = e.target.dataset.img;
+      });
+      item.addEventListener("mouseleave", (e) => {
+        e.target.src = oldSrcPhoto;
+      });
+    });
+  };
+
+  photoChange();
+
+  const checkValue = () => {
+    const allInputs = document.querySelectorAll("input");
+    allInputs.forEach((item) => {
+      if (item.getAttribute("name") === "user_name") {
+        item.addEventListener("blur", () => {
+          item.value = item.value.replace(/[^-а-я\s]/gi, "").trim();
+          item.value = item.value.replace(/-+/g, "-");
+          item.value = item.value.replace(/\s+/g, " ");
+          item.value = item.value.replace(/^-+/g, "");
+          item.value = item.value.replace(/-+$/g, "");
+          let massiveOfNames = item.value.split(" ");
+          for (let i = 0; i < massiveOfNames.length; i++) {
+            massiveOfNames[i] =
+              massiveOfNames[i][0].toUpperCase() +
+              massiveOfNames[i].slice(1).toLowerCase();
+          }
+          massiveOfNames = massiveOfNames.join(" ");
+          item.value = massiveOfNames;
+        });
+      } else if (item.getAttribute("name") === "user_email") {
+        item.addEventListener("blur", () => {
+          item.value = item.value.replace(/[^a-z@-_.!~*']/gi, "").trim();
+          item.value = item.value.replace(/-+/g, "-");
+          item.value = item.value.replace(/\s+/g, " ");
+          item.value = item.value.replace(/^-+/g, "");
+          item.value = item.value.replace(/-+$/g, "");
+        });
+      } else if (item.getAttribute("name") === "user_phone") {
+        item.addEventListener("blur", () => {
+          item.value = item.value.replace(/[^\d()-]/gi, "").trim();
+          item.value = item.value.replace(/-+/g, "-");
+          item.value = item.value.replace(/\s+/g, " ");
+          item.value = item.value.replace(/^-+/g, "");
+          item.value = item.value.replace(/-+$/g, "");
+        });
+      } else if (item.classList.contains("calc-item")) {
+        item.addEventListener("blur", () => {
+          item.value = item.value.replace(/\D/g, "");
+        });
+      }
+    });
+  };
+
+  checkValue();
 });
