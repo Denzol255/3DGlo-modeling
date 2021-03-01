@@ -299,46 +299,42 @@ window.addEventListener("DOMContentLoaded", () => {
   photoChange();
 
   const checkValue = () => {
-    const allInputs = document.querySelectorAll("input");
-    allInputs.forEach((item) => {
-      if (item.getAttribute("name") === "user_name") {
-        item.addEventListener("blur", () => {
-          item.value = item.value.replace(/[^-а-я\s]/gi, "").trim();
-          item.value = item.value.replace(/-+/g, "-");
-          item.value = item.value.replace(/\s+/g, " ");
-          item.value = item.value.replace(/^-+/g, "");
-          item.value = item.value.replace(/-+$/g, "");
-          let massiveOfNames = item.value.split(" ");
+    const deleteSpaceDash = (item) => {
+      item.value = item.value.replace(/-+/g, "-");
+      item.value = item.value.replace(/\s+/g, " ");
+      item.value = item.value.replace(/^-+/g, "");
+      item.value = item.value.replace(/-+$/g, "");
+    };
+    const replaceReg = (item, reg) => {
+      item.value = item.value.replace(reg, "").trim();
+      deleteSpaceDash(item);
+    };
+    document.addEventListener(
+      "blur",
+      (event) => {
+        const target = event.target;
+        if (target.matches("[name = 'user_name']")) {
+          replaceReg(target, /[^-а-яё\s]/gi);
+          let massiveOfNames = target.value.split(" ");
           for (let i = 0; i < massiveOfNames.length; i++) {
             massiveOfNames[i] =
-              massiveOfNames[i][0].toUpperCase() +
+              massiveOfNames[i].slice(0, 1).toUpperCase() +
               massiveOfNames[i].slice(1).toLowerCase();
           }
           massiveOfNames = massiveOfNames.join(" ");
-          item.value = massiveOfNames;
-        });
-      } else if (item.getAttribute("name") === "user_email") {
-        item.addEventListener("blur", () => {
-          item.value = item.value.replace(/[^a-z@-_.!~*']/gi, "").trim();
-          item.value = item.value.replace(/-+/g, "-");
-          item.value = item.value.replace(/\s+/g, " ");
-          item.value = item.value.replace(/^-+/g, "");
-          item.value = item.value.replace(/-+$/g, "");
-        });
-      } else if (item.getAttribute("name") === "user_phone") {
-        item.addEventListener("blur", () => {
-          item.value = item.value.replace(/[^\d()-]/gi, "").trim();
-          item.value = item.value.replace(/-+/g, "-");
-          item.value = item.value.replace(/\s+/g, " ");
-          item.value = item.value.replace(/^-+/g, "");
-          item.value = item.value.replace(/-+$/g, "");
-        });
-      } else if (item.classList.contains("calc-item")) {
-        item.addEventListener("blur", () => {
-          item.value = item.value.replace(/\D/g, "");
-        });
-      }
-    });
+          target.value = massiveOfNames;
+        } else if (target.matches("[name = 'user_message']")) {
+          replaceReg(target, /[^-а-яё\s]/gi);
+        } else if (target.matches("[name = 'user_email']")) {
+          replaceReg(target, /[^a-z@_.!~*'-]/gi);
+        } else if (target.matches("[name = 'user_phone']")) {
+          replaceReg(target, /[^\d()-]/gi);
+        } else if (target.matches(".calc-item")) {
+          target.value = target.value.replace(/\D/g, "");
+        }
+      },
+      true
+    );
   };
 
   checkValue();
