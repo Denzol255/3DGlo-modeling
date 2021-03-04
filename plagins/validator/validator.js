@@ -105,7 +105,6 @@ class Validator {
 			.validator-error{
 				font-size: 12px;
 				color:red;
-				
 			}
 			`;
     document.head.append(style);

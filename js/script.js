@@ -313,7 +313,8 @@ window.addEventListener("DOMContentLoaded", () => {
       item.value = item.value.replace(reg, "").trim();
       deleteSpaceDash(item);
     };
-    document.addEventListener(
+    const body = document.querySelector("body");
+    body.addEventListener(
       "blur",
       (event) => {
         const target = event.target;
@@ -328,11 +329,11 @@ window.addEventListener("DOMContentLoaded", () => {
           massiveOfNames = massiveOfNames.join(" ");
           target.value = massiveOfNames;
         } else if (target.matches("[name = 'user_message']")) {
-          replaceReg(target, /[^-а-яё\s]/gi);
+          replaceReg(target, /[^а-яё\s\d.,;:'"!?()-/]/gi);
         } else if (target.matches("[name = 'user_email']")) {
           replaceReg(target, /[^a-z@_.!~*'-]/gi);
         } else if (target.matches("[name = 'user_phone']")) {
-          replaceReg(target, /[^\d()-]/gi);
+          replaceReg(target, /[^\d+]/gi);
         } else if (target.matches(".calc-item")) {
           target.value = target.value.replace(/\D/g, "");
         }
@@ -391,4 +392,65 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   calc(100);
+
+  //send-ajax-form
+
+  const sendForm = () => {
+    const successMessage = "Спасибо, наш менеджер с вами скоро свяжется!",
+      errorMessage = "Что-то пошло не так",
+      loadMessage = "Загрузка...";
+
+    const allForms = document.querySelectorAll("form");
+
+    const statusMessage = document.createElement("div");
+    statusMessage.style.cssText = "font-size: 20px; color: white";
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+      request.addEventListener("readystatechange", () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData(request.status);
+        }
+      });
+      request.open("POST", "./server.php");
+      request.setRequestHeader("Content-Type", "aplication/json");
+
+      request.send(JSON.stringify(body));
+    };
+
+    allForms.forEach((item) => {
+      item.addEventListener("submit", (event) => {
+        event.preventDefault();
+        item.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+        const formData = new FormData(item);
+        const body = {};
+
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
+
+        postData(
+          body,
+          () => {
+            // statusMessage.textContent = successMessage;
+            alert(successMessage);
+            statusMessage.remove();
+            item.reset();
+          },
+          (error) => {
+            statusMessage.textContent = errorMessage;
+            console.error(error);
+          }
+        );
+      });
+    });
+  };
+
+  sendForm();
 });
