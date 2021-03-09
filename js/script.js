@@ -402,41 +402,25 @@ window.addEventListener("DOMContentLoaded", () => {
       loadMessage = "Загрузка...";
 
     const statusMessage = document.createElement("div");
-    statusMessage.style.cssText = "font-size: 20px; color: white";
 
-    const postData = (formData) => {
+    const postData = (body) => {
       return fetch("./server.php", {
         method: "POST",
         headers: {
           "Content-Type": "aplication/json",
         },
-        body: formData,
+        body: JSON.stringify(body),
       });
-
-      // return new Promise((resolve, reject) => {
-      //   const request = new XMLHttpRequest();
-      //   request.addEventListener("readystatechange", () => {
-      //     if (request.readyState !== 4) {
-      //       return;
-      //     }
-      //     if (request.status === 200) {
-      //       resolve();
-      //     } else {
-      //       reject(request.status);
-      //     }
-      //   });
-      //   request.open("POST", "./server.php");
-      //   request.setRequestHeader("Content-Type", "aplication/json");
-      //   request.send(JSON.stringify(body));
-      // });
     };
 
-    const checkFields = (id, selector, reg, warning) => {
+    const checkFields = (target, selector, reg, warning, warnText) => {
       let flag = true;
       document.querySelectorAll(`[name = ${selector}]`).forEach((item) => {
-        if (item.id.split("-")[0] === id) {
+        if (item.id.split("-")[0] === target.id) {
           if (!reg.test(item.value)) {
-            alert(warning);
+            target.appendChild(warning);
+            warning.style.cssText = "font-size: 20px; color: red";
+            warning.textContent = warnText;
             flag = false;
           } else {
             flag = true;
@@ -460,29 +444,38 @@ window.addEventListener("DOMContentLoaded", () => {
       if (target.matches("form")) {
         event.preventDefault();
         const checkPhone = checkFields(
-          target.id,
+          target,
           "user_phone",
           /\+?\d{7,13}/g,
+          statusMessage,
           warnForPhone
         );
         const checkEmail = checkFields(
-          target.id,
+          target,
           "user_email",
           /[^]/,
+          statusMessage,
           warnForEmail
         );
         const checkName = checkFields(
-          target.id,
+          target,
           "user_name",
           /.{2,}/g,
+          statusMessage,
           warnForName
         );
         if (checkPhone && checkEmail && checkName) {
+          statusMessage.style.cssText = "font-size: 20px; color: white";
           target.appendChild(statusMessage);
           const formData = new FormData(target);
           statusMessage.textContent = loadMessage;
+          const body = {};
 
-          postData(formData)
+          formData.forEach((val, key) => {
+            body[key] = val;
+          });
+
+          postData(body)
             .then((response) => {
               if (response.status !== 200) {
                 throw new Error("status network is not 200");
