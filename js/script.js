@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable arrow-parens */
 /* eslint-disable space-before-function-paren */
 /* eslint-disable strict */
@@ -400,55 +401,103 @@ window.addEventListener("DOMContentLoaded", () => {
       errorMessage = "Что-то пошло не так",
       loadMessage = "Загрузка...";
 
-    const allForms = document.querySelectorAll("form");
-
     const statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 20px; color: white";
 
-    const postData = (body, outputData, errorData) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener("readystatechange", () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          outputData();
-        } else {
-          errorData(request.status);
-        }
-      });
-      request.open("POST", "./server.php");
-      request.setRequestHeader("Content-Type", "aplication/json");
+    const postData = (body) => {
+      return new Promise((resolve, reject) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener("readystatechange", () => {
+          if (request.readyState !== 4) {
+            return;
+          }
+          if (request.status === 200) {
+            resolve();
+          } else {
+            reject(request.status);
+          }
+        });
+        request.open("POST", "./server.php");
+        request.setRequestHeader("Content-Type", "aplication/json");
 
-      request.send(JSON.stringify(body));
+        request.send(JSON.stringify(body));
+      });
     };
 
-    allForms.forEach((item) => {
-      item.addEventListener("submit", (event) => {
-        event.preventDefault();
-        item.appendChild(statusMessage);
-        statusMessage.textContent = loadMessage;
-        const formData = new FormData(item);
-        const body = {};
-
-        formData.forEach((val, key) => {
-          body[key] = val;
-        });
-
-        postData(
-          body,
-          () => {
-            // statusMessage.textContent = successMessage;
-            alert(successMessage);
-            statusMessage.remove();
-            item.reset();
-          },
-          (error) => {
-            statusMessage.textContent = errorMessage;
-            console.error(error);
+    const checkFields = (id, selector, reg, warning) => {
+      let flag = true;
+      document.querySelectorAll(`[name = ${selector}]`).forEach((item) => {
+        if (item.id.split("-")[0] === id) {
+          if (!reg.test(item.value)) {
+            alert(warning);
+            flag = false;
+          } else {
+            flag = true;
           }
-        );
+        }
       });
+      if (flag) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    document.addEventListener("submit", (event) => {
+      const target = event.target,
+        warnForPhone =
+          "Полe phone может начинаться с '+' и должно содержать от 7 до 13 символов",
+        warnForEmail = "Полe email не должно быть пустым",
+        warnForName = "Полe name должно содержать минимум 2 символа";
+
+      if (target.matches("form")) {
+        event.preventDefault();
+        const checkPhone = checkFields(
+          target.id,
+          "user_phone",
+          /\+?\d{7,13}/g,
+          warnForPhone
+        );
+        const checkEmail = checkFields(
+          target.id,
+          "user_email",
+          /[^]/,
+          warnForEmail
+        );
+        const checkName = checkFields(
+          target.id,
+          "user_name",
+          /.{2,}/g,
+          warnForName
+        );
+        if (checkPhone && checkEmail && checkName) {
+          target.appendChild(statusMessage);
+          statusMessage.textContent = loadMessage;
+          const formData = new FormData(target);
+          const body = {};
+
+          formData.forEach((val, key) => {
+            body[key] = val;
+          });
+
+          postData(body)
+            .then(() => {
+              statusMessage.textContent = successMessage;
+              setTimeout(() => {
+                statusMessage.remove();
+              }, 1000);
+              setTimeout(() => {
+                document.querySelector(".popup").style.display = "none";
+                document.querySelector("body").classList.remove("scroll--lock");
+              }, 3000);
+              target.reset();
+            })
+            .catch((error) => {
+              statusMessage.textContent = errorMessage;
+              console.error(error);
+            });
+        }
+      }
     });
   };
 
