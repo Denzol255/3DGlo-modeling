@@ -404,24 +404,31 @@ window.addEventListener("DOMContentLoaded", () => {
     const statusMessage = document.createElement("div");
     statusMessage.style.cssText = "font-size: 20px; color: white";
 
-    const postData = (body) => {
-      return new Promise((resolve, reject) => {
-        const request = new XMLHttpRequest();
-        request.addEventListener("readystatechange", () => {
-          if (request.readyState !== 4) {
-            return;
-          }
-          if (request.status === 200) {
-            resolve();
-          } else {
-            reject(request.status);
-          }
-        });
-        request.open("POST", "./server.php");
-        request.setRequestHeader("Content-Type", "aplication/json");
-
-        request.send(JSON.stringify(body));
+    const postData = (formData) => {
+      return fetch("./server.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "aplication/json",
+        },
+        body: formData,
       });
+
+      // return new Promise((resolve, reject) => {
+      //   const request = new XMLHttpRequest();
+      //   request.addEventListener("readystatechange", () => {
+      //     if (request.readyState !== 4) {
+      //       return;
+      //     }
+      //     if (request.status === 200) {
+      //       resolve();
+      //     } else {
+      //       reject(request.status);
+      //     }
+      //   });
+      //   request.open("POST", "./server.php");
+      //   request.setRequestHeader("Content-Type", "aplication/json");
+      //   request.send(JSON.stringify(body));
+      // });
     };
 
     const checkFields = (id, selector, reg, warning) => {
@@ -472,20 +479,18 @@ window.addEventListener("DOMContentLoaded", () => {
         );
         if (checkPhone && checkEmail && checkName) {
           target.appendChild(statusMessage);
-          statusMessage.textContent = loadMessage;
           const formData = new FormData(target);
-          const body = {};
+          statusMessage.textContent = loadMessage;
 
-          formData.forEach((val, key) => {
-            body[key] = val;
-          });
-
-          postData(body)
-            .then(() => {
+          postData(formData)
+            .then((response) => {
+              if (response.status !== 200) {
+                throw new Error("status network is not 200");
+              }
               statusMessage.textContent = successMessage;
               setTimeout(() => {
                 statusMessage.remove();
-              }, 1000);
+              }, 2000);
               setTimeout(() => {
                 document.querySelector(".popup").style.display = "none";
                 document.querySelector("body").classList.remove("scroll--lock");
