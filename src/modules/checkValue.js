@@ -30,7 +30,11 @@ const checkValue = () => {
         replaceReg(target, /[^a-z@_.!~*'-]/gi);
       } else if (target.matches("[name = 'user_phone']")) {
         replaceReg(target, /[^\d+]/gi);
-      } else if (target.matches(".calc-item")) {
+      } else if (
+        target.matches(".calc-square") ||
+        target.matches(".calc-count") ||
+        target.matches(".calc-day")
+      ) {
         target.value = target.value.replace(/\D/g, "");
       }
     },

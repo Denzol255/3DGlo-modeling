@@ -24,7 +24,9 @@ const togglePopup = () => {
   }
   popupBtn.forEach((item) => {
     item.addEventListener("click", () => {
-      if (window.innerWidth > 768) {
+      let width = window.innerWidth;
+      console.log(width);
+      if (width > 768) {
         popup.style.display = "block";
         animate({
           duration: 1000,
@@ -33,11 +35,7 @@ const togglePopup = () => {
           },
           draw(progress) {
             popupContent.style.left =
-              progress *
-                (document.documentElement.clientWidth / 2 -
-                  popupContent.offsetWidth / 2 +
-                  50) +
-              "px";
+              progress * (width / 2 - popupContent.offsetWidth / 2 + 50) + "px";
           },
         });
         document.querySelector("body").classList.add("scroll--lock");
@@ -47,10 +45,8 @@ const togglePopup = () => {
       }
     });
   });
-
   popup.addEventListener("click", (event) => {
     let target = event.target;
-
     if (target.classList.contains("popup-close")) {
       popup.style.display = "none";
       document.querySelector("body").classList.remove("scroll--lock");
@@ -61,6 +57,9 @@ const togglePopup = () => {
         document.querySelector("body").classList.remove("scroll--lock");
       }
     }
+  });
+  window.addEventListener("resize", () => {
+    popupContent.removeAttribute("style");
   });
 };
 

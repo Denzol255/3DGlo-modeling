@@ -38,7 +38,7 @@ const countTimer = (deadline) => {
       timerHours.textContent = "00";
       document.querySelector(".timer-numbers").classList.remove("d-none");
     }
-  }, 1000);
+  }, 0);
 };
 
 export default countTimer;
