@@ -1,17 +1,15 @@
-"use strict";
-
-import countTimer from "./modules/countTimer";
-import toggleMenu from "./modules/toggleMenu";
-import togglePopup from "./modules/togglePopup";
-import tabs from "./modules/tabs";
-import slider from "./modules/slider";
-import photoChange from "./modules/photoChange";
-import checkValue from "./modules/checkValue";
-import calc from "./modules/calc";
-import sendForm from "./modules/sendForm";
+import countTimer from './modules/countTimer';
+import toggleMenu from './modules/toggleMenu';
+import togglePopup from './modules/togglePopup';
+import tabs from './modules/tabs';
+import slider from './modules/slider';
+import photoChange from './modules/photoChange';
+import checkValue from './modules/checkValue';
+import calc from './modules/calc';
+import sendForm from './modules/sendForm';
 
 //Timer
-countTimer("17 march 2021");
+countTimer('9 november 2021');
 
 //Menu
 toggleMenu();

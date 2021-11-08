@@ -1,7 +1,7 @@
 const togglePopup = () => {
-  const popupBtn = document.querySelectorAll(".popup-btn"),
-    popup = document.querySelector(".popup"),
-    popupContent = popup.querySelector(".popup-content");
+  const popupBtn = document.querySelectorAll('.popup-btn'),
+    popup = document.querySelector('.popup'),
+    popupContent = popup.querySelector('.popup-content');
   function animate({ timing, draw, duration }) {
     const start = performance.now();
 
@@ -23,11 +23,10 @@ const togglePopup = () => {
     });
   }
   popupBtn.forEach((item) => {
-    item.addEventListener("click", () => {
-      let width = window.innerWidth;
-      console.log(width);
+    item.addEventListener('click', () => {
+      const width = window.innerWidth;
       if (width > 768) {
-        popup.style.display = "block";
+        popup.style.display = 'block';
         animate({
           duration: 1000,
           timing(timeFraction) {
@@ -35,31 +34,27 @@ const togglePopup = () => {
           },
           draw(progress) {
             popupContent.style.left =
-              progress * (width / 2 - popupContent.offsetWidth / 2 + 50) + "px";
+              progress * (width / 2 - popupContent.offsetWidth / 2 + 50) + 'px';
           },
         });
-        document.querySelector("body").classList.add("scroll--lock");
       } else {
-        popup.style.display = "block";
-        document.querySelector("body").classList.add("scroll--lock");
+        popup.style.display = 'block';
       }
+      document.body.classList.add('scroll--lock');
     });
   });
-  popup.addEventListener("click", (event) => {
-    let target = event.target;
-    if (target.classList.contains("popup-close")) {
-      popup.style.display = "none";
-      document.querySelector("body").classList.remove("scroll--lock");
-    } else {
-      target = target.closest(".popup-content");
-      if (!target) {
-        popup.style.display = "none";
-        document.querySelector("body").classList.remove("scroll--lock");
-      }
+  popup.addEventListener('click', (event) => {
+    const target = event.target;
+    if (
+      target.classList.contains('popup-close') ||
+      !target.closest('.popup-content')
+    ) {
+      popup.style.display = 'none';
+      document.body.classList.remove('scroll--lock');
     }
   });
-  window.addEventListener("resize", () => {
-    popupContent.removeAttribute("style");
+  window.addEventListener('resize', () => {
+    popupContent.removeAttribute('style');
   });
 };
 

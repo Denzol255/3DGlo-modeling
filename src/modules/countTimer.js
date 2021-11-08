@@ -1,14 +1,16 @@
 const countTimer = (deadline) => {
-  const timerHours = document.querySelector("#timer-hours"),
-    timerMinutes = document.querySelector("#timer-minutes"),
-    timerSeconds = document.querySelector("#timer-seconds");
+  const timerHours = document.querySelector('#timer-hours'),
+    timerMinutes = document.querySelector('#timer-minutes'),
+    timerSeconds = document.querySelector('#timer-seconds');
+
   function getTimeRemaining() {
-    const dateStop = new Date(deadline).getTime(),
-      dateNow = new Date().getTime(),
-      timeRemaining = (dateStop - dateNow) / 1000,
-      seconds = Math.floor(timeRemaining % 60),
-      minutes = Math.floor((timeRemaining / 60) % 60),
-      hours = Math.floor(timeRemaining / 60 / 60);
+    const dateStop = new Date(deadline).getTime();
+    const dateNow = new Date().getTime();
+    const timeRemaining = (dateStop - dateNow) / 1000;
+    const seconds = Math.floor(timeRemaining % 60);
+    const minutes = Math.floor((timeRemaining / 60) % 60);
+    const hours = Math.floor(timeRemaining / 60 / 60);
+
     return {
       timeRemaining,
       hours,
@@ -16,13 +18,14 @@ const countTimer = (deadline) => {
       seconds,
     };
   }
-  const getZero = function (num) {
+
+  function getZero(num) {
     if (num < 10) {
-      return "0" + num;
+      return '0' + num;
     } else {
       return num;
     }
-  };
+  }
 
   const updateClock = setInterval(() => {
     const timer = getTimeRemaining();
@@ -30,13 +33,13 @@ const countTimer = (deadline) => {
       timerHours.textContent = getZero(timer.hours);
       timerMinutes.textContent = getZero(timer.minutes);
       timerSeconds.textContent = getZero(timer.seconds);
-      document.querySelector(".timer-numbers").classList.remove("d-none");
+      document.querySelector('.timer-numbers').classList.remove('d-none');
     } else {
       clearInterval(updateClock);
-      timerSeconds.textContent = "00";
-      timerMinutes.textContent = "00";
-      timerHours.textContent = "00";
-      document.querySelector(".timer-numbers").classList.remove("d-none");
+      timerSeconds.textContent = '00';
+      timerMinutes.textContent = '00';
+      timerHours.textContent = '00';
+      document.querySelector('.timer-numbers').classList.remove('d-none');
     }
   }, 0);
 };
